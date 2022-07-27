@@ -1,0 +1,153 @@
+SPAR_Seq pipeline wrapper workflow V1.3.X
+Last Updated: September 20, 2021 {KRZ}
+
+#-------- Dependencies --------#
+
+1. Bowtie 1 (http://bowtie-bio.sourceforge.net/index.shtml)
+2. HTSeq* (https://htseq.readthedocs.io/en/release_0.11.1/index.html)
+3. Python3 [os, argparse, re, openpyxl, pandas, datetime]*  
+
+
+*To install pkgs 
+$ module load conda
+$ pip install --user [package]
+
+Input folder structure
+	/runclX
+		-/R1_files
+			-fastq files
+
+Resource folder structure
+	/resources/SPAR_Seq/
+		-/bowtie_index
+				-bowtie index files
+				-reference fa file
+				-reference GTF file
+		-codon_aa_table.csv
+		-sparseq_pipeline_V1.3.X.sh
+		-sparseq_analysis_V1.3.X.py
+
+#-------- Workflow --------#
+
+1. Create run folder runclX and subdirectory R1_files; download fastq files into R1_files
+2. Run $bash sparseq_pipeline_V1.3.X.sh path/to/run/folder/runclXX path/to/resource/folder
+		> Wrapper script performs the following: 
+			i.   unzips fastqs
+			ii.  Creates samcounts directory then runs bowtie and HTseq in parallel 
+			iii. Creates results directory then run sparseq_analysis_V1.3.py
+			vi.  Re-zips FASTQ files
+			v.   Prompts user if they want to remove sam files [y/n]    
+
+#-------- Version Changes  --------#
+
+[V1.3]
+- Moved bowtie and HTseq steps to be run first
+- Now creates result directory and automatically output appropriate files directly into directory 
+- Merged the following scripts into one python script and created {components}:
+
+	a. Selected_Var_sum_improved_v4_V1p2_jul2_SB.py
+		> {select_vars}
+		i. input: *.fastq files
+		ii. outputs: R1R2_S_26_top_PCR_hits.txt, R1R2_Spbs_top_PCR_hits.txt, R1R2_RdRP_top_PCR_hits.txt, important_vars_detailed_vX.txt, runclXX_SelectedVariants.xlsx 
+
+	b. All_top1_var_detailed_out_vV1p2_june27_SB.py
+		> {all_top}
+		i. input - *.fastq files and and codon_aa_table.csv
+		ii. outputs - SparSeq_RdRP_top1_Var_summary_table.txt, SparSeq_S_26_top1_Var_summary_table.txt, SparSeq_Spbs_top1_Var_summary_table.txt, runclXX_AllVariantDetails.xlsx
+
+	c.	bowtie_count_table.py (v4)				
+		> {bowtie_count}
+		i. input - *sam.count.txt files
+		ii. outputs - bowtie_count_table_v#.txt, runclXX_CountTable.txt, runclXX_CountTable.xlsx
+
+	d.	variant_agg_SSV1.2_v12.R
+		> {variant_agg}
+		i. input - runcl*_CountTable.txt, SparSeq_S_26_top1_Var_summary_table.txt and runcl*_SelectedVariants.txt files
+		ii. outputs: sparseq_report_runclXX.xlsx
+	
+	- accounts for steps 2, 3, 4, 6-12 in in workflow_SSV1.2_v9 (described in more detail below)
+	- added shebang line (important for OS execution)
+	- closed all opened documents (important to maintain file integrity)
+	- added arguments for increased flexibility/use with wrapper script:
+		> run_folder & resource_folder paths
+
+	- added optional flags --start [select_vars|all_top|bowtie_count|variant_agg] and --intermediates [Y|N]
+		> can start at a different component of the script or keep intermediate files (HTseq outputs) without having to go in and modify the script directly
+		>> $python3 sparseq_analysis_v1.py path/run_folder path/resource_folder --start all_top --intermediates Y
+
+	- added regex to parse sample ID, run ID and script versioning
+	- added functionality to add well to sample ID if detects as a duplicate sample ID
+	- liminted amount of nested loops (increases runtime)
+	- standardized Swf_26 to S_26
+
+	a. {select_vars}
+	- removed need for SE_fastq.txt file script will look into R1_file folder
+		> eliminates step 2 in workflow_SSV1.2_v9
+		>> Fill in sample IDs in SE_fastq_files.txt file $ls *.fastq > SE_fastq_files.txt
+	- now uses 12bp version for count dictionary (ie. "AGAGATATTT" has been replaced with "AGAGAGATATTT") for consistency with {all_top}
+	- added runclXX_SelectedVariants.xlsx output 
+		> replaces step 10 in workflow_SSV1.2_v9:
+			>> Copy the outputs "important_vars_detailed_V4.txt" and "SparSeq_Swf_26_top1_Var_summary_table.txt" from R1_files to the main folder. Open important_vars_detailed_V4.txt in excel, split with TextToColumns if needed, save as  runclXX_SelectedVariants.xlsx
+
+	- added runclXX_SelectedVariants.txt ouput to be used for {variant_agg}
+		> workaround for issue with .xlsx output creation via openpyxl; openpyxl won't be able to read file until workbook has been opened and saved 
+	
+
+	b. {all_top}
+	- removed need for SE_fastq.txt file script will look into R1_file folder
+		> eliminates step 2 in workflow_SSV1.2_v9:
+		>> Fill in sample IDs in SE_fastq_files.txt file $ls *.fastq > SE_fastq_files.txt
+
+	- removed need for additional loop through FASTQs, combined with {select_vars}
+	- removed need for additional creation of target counts, combined with {select_vars}
+	- eliminated duplicated code by defining internal functions to create target count nt/aa dictionaries
+	- added in functionality to automatically add newline to samples with short lines
+		> script displays warning message on screen indicating sample and file with missing data
+
+	- added runclXX_AllVariantDetails.xlsx output
+		> replaces step 12 in workflow_SSV1.2_v9:
+		>> Take the 3 SparSeq...._summary_table.txt files from R1_files, open in excel, use text to columns button to split the data by ","  and save as one excel file with 3 sheets - RunCLXX_AllDetailedResults.xlsx (now runclXX_AllVariantDetails.xlsx)
+
+	c. {bowtie_counts}
+    - removed need for samCountsOut.txt script will look into samcounts folder
+    	> replaces steps 6 & 7 in workflow_SSV1.2_v9:
+		>> in R1_files, move the counts files to samcounts: $mv *.count.txt samcounts
+		>> Move to samcounts and copy names of files into a separate text file $cd samcounts/$ls *.count.txt > samCountOuts.txt
+
+	- removed double looping of count.txt outputs script now adds header line if first iteration
+    - added in fields sample and filename directly to output
+	- added runc1XX_Counts.xlxs output including generation of total.viral and total.raw.read fields
+		> replaces step 9 in workflow_SSV1.2_v9:
+		>> Copy the bowtie_count_table_v3.txt file from samcounts to main folder.  This is the total bowtie counts for each amplicon per sample plus some extra info. Open it in excel and do these things:
+			-add a new column called total.viral and make it the sum of Rdrp, Spoly, Swf_26 and Srbd. 
+			-add a new column called total.raw.reads and make it the sum of everything except total.viral
+			-copy the filename to a column on the end and name the column 'filename'	-copy it again to the next column and use Data->TextToColumn to split by _ to separate the W#
+			-cut and paste the W# in column A to replace original filenames, name the column "sample", and delete the rest of the stuff from TextToColumn
+			-save as runclXX_counts.xlsx
+
+	- added output runclXX_CountTable.txt 
+		- kept generation of bowtie_count_table_vX.txt just in case its needed
+		> workaround for issue with .xlsx output creation via openpyxl; openpyxl won't be able to read file until workbook has been opened and saved 
+
+	- removed unused columns in bowtie_counts_v*.txt output
+	 > "Srbd", "__no_feature", "__ambiguous", "__too_low_aQual","__alignment_not_unique"
+
+ 	- added the removal of HTseq output files (unless specified to keep using --intermediates Y) after files are generated
+
+	d. {variant_agg} 
+	- added to script so no longer needs to be run interactively
+ 	- in/output filenames and date automatically determined within scripts
+		> replaces step 11 in workflow_SSV1.2_v9: 
+		>> Open R script variant_agg_v4.R and run script, changing working directory at the top,  input filenames as needed, date at line 83 and output filename at line 104
+	- added in handling of different sample IDs (X*/W*/Neg) when building Samples/ControlsOnly dataframes
+
+- added in line to rezip FASTQs after analysis
+- added in line to prompt user if they want to remove .sam files
+	> [-I flag] since this is a computationally intensive step wanted to put a buffer in place incase there was an issue with the output files 
+
+[V1.3.1]
+- Updated script version regex to account for 'V'
+- Outputs numbers instead of text for runclXX_CountTable.xlsx 
+
+[V1.3.2]
+- Fixed issue with regex via increasing amount of allowed sample digits from {1,2} to {1,4}
