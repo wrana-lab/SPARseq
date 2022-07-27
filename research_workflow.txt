@@ -1,0 +1,50 @@
+Basic workflow for sparseq covid analysis 
+Seda B/Lauren C; Jeff Wrana's lab
+May 28 2021
+
+Requirements:
+
+1. Bowtie 1 (http://bowtie-bio.sourceforge.net/index.shtml)
+2. Python3
+3. HTSeq (https://htseq.readthedocs.io/en/release_0.11.1/index.html)
+
+Folder structure
+/sparseqrunX
+	-/R1_files
+		-/samcounts
+			-bowtie_count_table.py 
+		-fastq files
+	-/bowtie_index
+		-bowtie index files
+		-reference fa file
+		-reference GTF file
+	-/results
+
+
+1. Download fastq files, place in R1_files, and unzip files (gunzip *.gz)
+
+2. Fill in sample IDs in SE_fastq_files.txt file (ls *.fastq > SE_fastq_files.txt)
+ 
+3. Run UK_top1_py script in R1_files and SE_fastq_files (python3 UK_top1_py.py SE_fastq_files.txt)
+This outputs an alignment file for each amplicon and 'important_vars_detailed_v3.txt'. This important_vars file is what quickly tells us if there is a variant. 
+
+4. Run the variant counter methods in R1_files (these steps are slow): 
+
+for f in ../R1_files/*.fastq; do bowtie /Volumes/PromisePegasus/SPAR_SEQ/real_files/sparseqrunX/bowtie_index/bowtieIndexName $f $f.sam --best -v 3 -k 1 -m 1 -S; done;  
+
+for x in ../R1_files/*.sam; do python3 -m HTSeq.scripts.count -f sam -t CDS $x ../bowtie_index/Bowtie_Map_GTF.gtf > $x.count.txt; done;
+
+5. in R1_files, make /samcounts folder to move the sam counts to:
+mkdir samcounts
+mv *.count.txt samcounts
+
+6. Move to samcounts and copy names of files into a separate text file
+ls *.count.txt > samCountOuts.txt
+
+7. Run bowtie counter script from within the samcounts folder
+python3 bowtie_count_table.py samCountOuts.txt
+
+8. In samcounts folder get the bowtie_count_table_v3 txt file and move it to results directory and open/save in excel. This is the total counts for each amplicon per sample plus some extra info. 
+
+
+
