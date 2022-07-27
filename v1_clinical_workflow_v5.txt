@@ -1,0 +1,90 @@
+Basic workflow for sparseq covid analysis 
+Seda B/Lauren C; Jeff Wrana's lab
+June 3 2021
+
+Requirements:
+
+1. Bowtie 1 (http://bowtie-bio.sourceforge.net/index.shtml)
+2. Python3
+3. HTSeq (https://htseq.readthedocs.io/en/release_0.11.1/index.html)
+4. R
+
+Folder structure
+/runclX
+	-/R1_files
+		-/samcounts
+			-bowtie_count_table.py 
+			-samCountOuts.txt
+		-fastq files
+		-All_top1_var_detailed_out.py
+		-UK_B_SA_Var_sum_improved_V3.py
+		-codon_aa_table.csv
+		-SE_fastq_files.txt
+	-/bowtie_index
+		-bowtie index files
+		-reference fa file
+		-reference GTF file
+	-/results
+	-variant_agg_v7å.R
+
+
+#Part 1: Processing 
+
+1. Download fastq files, place in R1_files, and unzip files (gunzip *.gz)
+
+2. Fill in sample IDs in SE_fastq_files.txt file (ls *.fastq > SE_fastq_files.txt)
+ 
+3. Run python scripts in R1_files 
+This outputs an alignment file for each amplicon and 'important_vars_detailed_v3.txt'. This important_vars file is what quickly tells us if there is a variant. 
+python3 Selected_Var_sum_improved_V4.py 
+
+4. Run All_top1_var_detailed_out.py. This outputs three tables: SparSeq...._summary_table.txt which have more info about specific variants.
+python3 All_top1_var_detailed_out.py
+
+5. Run the variant counter methods in R1_files, you can edit the PATH of the index files each time or keep it somewhere convenient (these steps are slow): 
+
+for f in ../R1_files/*.fastq; do bowtie /Volumes/PromisePegasus/SPAR_SEQ/clinical_runs/bowtie_index/bw1_covid_index_run18 $f $f.sam --best -v 3 -k 1 -m 1 -S; done && for x in ../R1_files/*.sam; do python3 -m HTSeq.scripts.count -f sam -t CDS $x /Volumes/PromisePegasus/SPAR_SEQ/clinical_runs/bowtie_index/Bowtie_Map_Run18_ACTG1.gtf > $x.count.txt; done;
+
+6. in R1_files, move the counts files to samcounts:
+mv *.count.txt samcounts
+
+7. Move to samcounts and copy names of files into a separate text file
+cd samcounts
+ls *.count.txt > samCountOuts.txt
+
+8. Run bowtie counter script from within the samcounts folder
+python3 bowtie_count_table.py samCountOuts.txt
+
+#Part 2: Analysis
+Sometimes there is a duplicate sample on the plate. There is a sample ID file that is sent around before the sequencer is loaded - it's good to take a look at this file just to check for dupes. Having a dupe ID causes problems in the analysis. If there is a dupe sample, you have to edit those samples by adding the well ID to the end of the W#. The well ID is in the fastq file name. Example: If sample W93001473 was in wells 11P and 12J, that would look like W93001473_11P and W93001473_12J. 
+Do this for the following files:
+bowtie_count_table_v3.txt
+important_vars_detailed_V3.txt
+SparSeq_Srbd_top1_Var_summary_table.txt
+
+
+9. Copy the bowtie_count_table_v3.txt file from samcounts to main folder.  This is the total bowtie counts for each amplicon per sample plus some extra info. Open it in excel and do these things:
+	-add a new column called total.viral and make it the sum of Rdrp, Spoly, and Srbd. 
+	-add a new column called total.raw.reads and make it the sum of everything except total.viral
+	-copy the filename to a column on the end and name the column 'filename'
+	-copy it again to the next column and use Data->TextToColumn to split by _ to separate the W#
+	-cut and paste the W# in column A to replace original filenames and delete the rest of the stuff from TextToColumn
+	-save as runclXX_counts.xlsx
+
+10. Copy the outputs "important_vars_detailed_V3.txt" and "SparSeq_Srbd_top1_Var_summary_table.txt" from R1_files to the main folder. Open important_vars_detailed_V3.txt in excel, split with TextToColumns if needed, save as  runclXX_SelectedVariants.xlsx
+	
+11. Open R script variant_agg_v4.R and run script, changing working directory at the top,  input filenames as needed, date at line 83 and output filename at line 104
+
+12. Take the 3 SparSeq...._summary_table.txt files from R1_files, open in excel, use text to columns button to split the data, and save as one excel file with 3 sheets - RunCLXX_AllDetailedResults.xlsx
+
+13. Send Jeff/Lauren/Seda the output from R, the modified count table, the ...DetailedResults.xlsx file, and the ..VariantDetails.xlsx file. So it should be 4 excel files, and one of the files has 3 sheets. 
+
+
+Two common issues:
+1. If there's an insertion or deletion in a sample's amplicon, the script All_top1_var_detailed_out.py will report every position in that sample for that amplicon as a mutation. You might have to remove that sample from SE_fastq_files.txt and re-run the script. Then we would look at the other outputs for that sample. 
+2. Occasionally there is a formatting issue in the SparSeq...._summary_table.txt where it starts a new line in the middle of a short line - if you run into this just open the text file and move that to a new line. 
+
+
+
+
+
