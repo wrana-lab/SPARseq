@@ -630,9 +630,9 @@ def main():
 
                 #for val,item in Spbs_ :
                     #fileout8.write(">" + filename[:18] + "_Spbs_" + str(val) + "of" + str(rdrp_c_) + " " + item + "\n")
-                #fileoutMutSum.write(filename + ",N501Y," + str(N501Yc) +","+ str(S_26_c_)+ ",S_26" +"\n")
-                #fileoutMutSum.write(filename + ",E484K," + str(E484Kc) +","+ str(S_26_c_)+ ",S_26" +"\n")
-                #fileoutMutSum.write(filename + ",S494P," + str(S494Pc) +","+ str(S_26_c_)+ ",S_26" +"\n")
+                #fileoutMutSum.write(filename + ",N501Y," + str(N501Yc) +","+ str(Srbd_v2_c_)+ ",Srbd_v2" +"\n")
+                #fileoutMutSum.write(filename + ",E484K," + str(E484Kc) +","+ str(Srbd_v2_c_)+ ",Srbd_v2" +"\n")
+                #fileoutMutSum.write(filename + ",S494P," + str(S494Pc) +","+ str(Srbd_v2_c_)+ ",Srbd_v2" +"\n")
                 #fileoutMutSum.write(filename + ",P681H," + str(P681Hc) +","+ str(Spbs_c_)+ ",Spbs" +"\n")
 
         if run_select_vars:
@@ -775,10 +775,10 @@ def main():
         samplesOnly = combined[combined['type'] =='Sample']
         controlsOnly = controlsOnly[["sample", "ACTB", "ACTG", "Rdrp",  "Spoly", "Srbd_v2"]]
 
-        #generating median of S_26 control values
+        #generating median of Srbd_v2 control values
         Srbd_v2_median = controlsOnly["Srbd_v2"].median()
 
-        #generating absolute difference between each S_26 value and the overall median value
+        #generating absolute difference between each Srbd_v2 value and the overall median value
         controlsOnly.loc[:,"medianDiff"] = controlsOnly["Srbd_v2"].apply(lambda x: abs(x-Srbd_v2_median))
 
         #generating MAD by then take the median of medianDiff
