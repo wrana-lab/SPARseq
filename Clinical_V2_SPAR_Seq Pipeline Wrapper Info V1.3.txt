@@ -48,12 +48,12 @@ Resource folder structure
 	a. Selected_Var_sum_improved_v4_V1p2_jul2_SB.py
 		> {select_vars}
 		i. input: *.fastq files
-		ii. outputs: R1R2_S_26_top_PCR_hits.txt, R1R2_Spbs_top_PCR_hits.txt, R1R2_RdRP_top_PCR_hits.txt, important_vars_detailed_vX.txt, runclXX_SelectedVariants.xlsx 
+		ii. outputs: R1R2_Srbd_v2_top_PCR_hits.txt, R1R2_Spbs_top_PCR_hits.txt, R1R2_RdRP_top_PCR_hits.txt, important_vars_detailed_vX.txt, runclXX_SelectedVariants.xlsx 
 
 	b. All_top1_var_detailed_out_vV1p2_june27_SB.py
 		> {all_top}
 		i. input - *.fastq files and and codon_aa_table.csv
-		ii. outputs - SparSeq_RdRP_top1_Var_summary_table.txt, SparSeq_S_26_top1_Var_summary_table.txt, SparSeq_Spbs_top1_Var_summary_table.txt, runclXX_AllVariantDetails.xlsx
+		ii. outputs - SparSeq_RdRP_top1_Var_summary_table.txt, SparSeq_Srbd_v2_top1_Var_summary_table.txt, SparSeq_Spbs_top1_Var_summary_table.txt, runclXX_AllVariantDetails.xlsx
 
 	c.	bowtie_count_table.py (v4)				
 		> {bowtie_count}
@@ -62,7 +62,7 @@ Resource folder structure
 
 	d.	variant_agg_SSV1.2_v12.R
 		> {variant_agg}
-		i. input - runcl*_CountTable.txt, SparSeq_S_26_top1_Var_summary_table.txt and runcl*_SelectedVariants.txt files
+		i. input - runcl*_CountTable.txt, SparSeq_Srbd_v2_top1_Var_summary_table.txt and runcl*_SelectedVariants.txt files
 		ii. outputs: sparseq_report_runclXX.xlsx
 	
 	- accounts for steps 2, 3, 4, 6-12 in in workflow_SSV1.2_v9 (described in more detail below)
