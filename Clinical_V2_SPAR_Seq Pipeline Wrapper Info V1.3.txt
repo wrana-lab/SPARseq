@@ -118,7 +118,7 @@ Resource folder structure
 	- added runc1XX_Counts.xlxs output including generation of total.viral and total.raw.read fields
 		> replaces step 9 in workflow_SSV1.2_v9:
 		>> Copy the bowtie_count_table_v3.txt file from samcounts to main folder.  This is the total bowtie counts for each amplicon per sample plus some extra info. Open it in excel and do these things:
-			-add a new column called total.viral and make it the sum of Rdrp, Spoly, Swf_26 and Srbd. 
+			-add a new column called total.viral and make it the sum of Rdrp, Spoly, Srbd_v2 and Srbd. 
 			-add a new column called total.raw.reads and make it the sum of everything except total.viral
 			-copy the filename to a column on the end and name the column 'filename'	-copy it again to the next column and use Data->TextToColumn to split by _ to separate the W#
 			-cut and paste the W# in column A to replace original filenames, name the column "sample", and delete the rest of the stuff from TextToColumn
