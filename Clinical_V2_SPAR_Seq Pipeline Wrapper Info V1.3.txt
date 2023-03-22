@@ -78,7 +78,6 @@ Resource folder structure
 	- added regex to parse sample ID, run ID and script versioning
 	- added functionality to add well to sample ID if detects as a duplicate sample ID
 	- liminted amount of nested loops (increases runtime)
-	- standardized Swf_26 to S_26
 
 	a. {select_vars}
 	- removed need for SE_fastq.txt file script will look into R1_file folder
@@ -87,7 +86,7 @@ Resource folder structure
 	- now uses 12bp version for count dictionary (ie. "AGAGATATTT" has been replaced with "AGAGAGATATTT") for consistency with {all_top}
 	- added runclXX_SelectedVariants.xlsx output 
 		> replaces step 10 in workflow_SSV1.2_v9:
-			>> Copy the outputs "important_vars_detailed_V4.txt" and "SparSeq_Swf_26_top1_Var_summary_table.txt" from R1_files to the main folder. Open important_vars_detailed_V4.txt in excel, split with TextToColumns if needed, save as  runclXX_SelectedVariants.xlsx
+			>> Copy the outputs "important_vars_detailed_V4.txt" and "SparSeq_Srbd_v2_top1_Var_summary_table.txt" from R1_files to the main folder. Open important_vars_detailed_V4.txt in excel, split with TextToColumns if needed, save as  runclXX_SelectedVariants.xlsx
 
 	- added runclXX_SelectedVariants.txt ouput to be used for {variant_agg}
 		> workaround for issue with .xlsx output creation via openpyxl; openpyxl won't be able to read file until workbook has been opened and saved 
