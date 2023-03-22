@@ -97,7 +97,7 @@ def main():
         #define select_var output files
         if run_select_vars:
 
-            Srbd_v2_PCR_path = args.run_folder+"/R1R2_S_26_top_PCR_hits.txt"
+            Srbd_v2_PCR_path = args.run_folder+"/R1R2_Srbd_v2_top_PCR_hits.txt"
             Srbd_v2_PCR_file = open(Srbd_v2_PCR_path, "w")
             Srbd_v2_PCR_file.write(">Refseq_Srbd_v2_pst_strand" + "\n" + Srbd_v2_amp + "\n")
 
@@ -145,8 +145,8 @@ def main():
 
             #fileout1 = open("RdRP_nt_list.txt", "w")
             #fileout2 = open("RdRP_aa_list.txt", "w")
-            #fileout3 = open("S_26_nt_list.txt", "w")
-            #fileout4 = open("S_26_aa_list.txt", "w")
+            #fileout3 = open("Srbd_v2_nt_list.txt", "w")
+            #fileout4 = open("Srbd_v2_aa_list.txt", "w")
             #fileout5 = open("Spbs_nt_list.txt", "w")
             #fileout6 = open("Spbs_aa_list.txt", "w")
 
