@@ -479,7 +479,7 @@ def main():
                                         Srbd_v2_Var_file.write("no#" + str(val2) + ",")
                                         ws_data.append("no#" + str(val2))
 
-                                for val3,item3 inSrbd_v2_[2:3] :
+                                for val3,item3 in Srbd_v2_[2:3] :
                                     seq3=item3[1:127]
                                     if ncodon == seq3[var_aa_start:var_aa_end]:
                                         Srbd_v2_Var_file.write("yes#" + str(val3) + "," + filename + "\n")
