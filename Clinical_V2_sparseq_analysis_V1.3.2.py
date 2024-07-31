@@ -793,7 +793,7 @@ def main():
         vardet = pandas.read_csv(vardetfile, usecols=[0,1,2,3,7,4,5,6], header=0) #only loading relative information
         vardet.loc[:,"Srbd_v2_diff"] = abs(vardet["Srbd_v2_WT_percentage"]-vardet["Srbd_v2_tophit_percentage"])
 
-        #june 10 - jeff asked to change it to marking rows with a difference > 15 between tophit% and wt%
+        # marking rows with a difference > 15 between tophit% and wt%
         Srbd_v2TopHitWarnings = vardet[(vardet["Srbd_v2_diff"] < 15) & (vardet["Srbd_v2_tophit"] != "WT")]
 
         today = datetime.datetime.strftime(datetime.datetime.now(), "%B %d, %Y")
