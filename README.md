@@ -16,5 +16,11 @@ As covid19 variants emerged, we updated the analysis pipeline. The initial resea
 
 
 
+Instructions
+
+Initial one-time step:
+Build bowtie index with
+bowtie-build clinical_V2_sparsq_V1p2_amplicons.fa clinical_V2_sparsq_V1p2_amplicons
+
 
 
