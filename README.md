@@ -54,15 +54,20 @@ Instructions for one run:
 1. Create run folder runclX and subdirectory R1_files; place fastq files into R1_files
 2. Run $bash Clinical_V2_sparseq_pipeline_V1.3.2.sh path/to/run/folder/runclXX path/to/resource/folder
 
-   The wrapper script performs the following: 
+   The wrapper script performs the following:
+   
 	i.   unzips fastqs
+
 	ii.  Creates samcounts directory then runs bowtie and HTseq
-	iii. Creates results directory then run Clinical_V2_sparseq_analysis_V1.3.2 which outputs several key results tables 
+
+	iii. Creates results directory then run Clinical_V2_sparseq_analysis_V1.3.2 which outputs several key results tables
+
 		-runclxxx_AllVariantDetails.xlsx
 		-runclxxx_CountTable.xlsx
 		-runclxxx_SelectedVariants.xlsx
 		-sparseq_report_runclxxx.xlsx
-		-please note variant calling is manually completed by a supervisor based on review of the 4 outputs 
+		-please note variant calling is manually completed by a supervisor based on review of the 4 outputs
+   
 	vi.  Re-zips FASTQ files
 
 
