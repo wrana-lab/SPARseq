@@ -8,9 +8,12 @@ Dependencies
    
 Tested on MacOS 12.7.5
 
-It is recommended to use pip for certain packages such as HTSeq: to install packages for python3 run
-pip install --user [package]
+It is recommended to add Bowtie and HTSeq to your environment $PATH or you will have to adjust the .sh scripts to include your PATH for bowtie and HTSeq calls.
 
+It is recommended to use pip for certain packages such as HTSeq: to install packages for python3 run
+```
+pip install --user [package]
+```
 
 Versions
 
