@@ -5,7 +5,11 @@ Dependencies
 1. Bowtie 0.12.7 (http://bowtie-bio.sourceforge.net/index.shtml)
 2. HTSeq 0.13.5 (https://github.com/htseq)
 3. Python3 [os, argparse, re, openpyxl, pandas, datetime]
+   
 Tested on MacOS 12.7.5
+
+It is recommended to use pip for certain packages such as HTSeq: to install packages for python3 run
+pip install --user [package]
 
 
 Versions
