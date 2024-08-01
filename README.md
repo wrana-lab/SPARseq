@@ -19,11 +19,13 @@ This is the pipeline for the daily clinical sample processing.
 The run folder and resource folder must be subfolders of the same parent folder:
 
 Run folder structure
+
 	/runclX  
 		-/R1_files
 			-fastq files
 
 Resource folder structure
+
 	/resources
 		-/bowtie_index
 				-bowtie index files
