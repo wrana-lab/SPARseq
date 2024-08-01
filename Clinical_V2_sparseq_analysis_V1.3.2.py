@@ -769,7 +769,8 @@ def main():
         Srbd_v2df.drop_duplicates()
 
         combined = countdf.merge(Srbd_v2df, how="left", on='sample')
-        combined.loc[:,'type'] = combined['sample'].apply(lambda x: 'Sample' if (x.startswith('X') | x.startswith('W') | x.startswith('Neg')) else 'Control')
+        combined.loc[:,'type'] = combined['sample'].apply(lambda x: 'Sample' if (x.startswith('X') | x.startswith('W') | x.startswith('Y') | x.startswith('Z') | x.startswith('Neg')) else 'Control')
+
 
         controlsOnly = combined[combined['type'] == 'Control']
         samplesOnly = combined[combined['type'] =='Sample']
@@ -799,8 +800,8 @@ def main():
         today = datetime.datetime.strftime(datetime.datetime.now(), "%B %d, %Y")
         samplesOnly.loc[:, "Date"] = "Processed "+str(today)
 
-        samplesOnly.loc[:,"E484K"] = samplesOnly["aa_var"].apply(lambda x: "+" if ("Glu484Lys" in x) else "-")
-        samplesOnly.loc[:,"N501Y"] = samplesOnly["aa_var"].apply(lambda x: "+" if ("Asn501Tyr" in x) else "-")
+        samplesOnly.loc[:,"E484K"] = samplesOnly["aa_var"].apply(lambda x: "+" if ("Glu484Lys" in str(x)) else "-")
+        samplesOnly.loc[:,"N501Y"] = samplesOnly["aa_var"].apply(lambda x: "+" if ("Asn501Tyr" in str(x)) else "-")
         samplesOnly.loc[:,"QC_Check_MinReads"] = (samplesOnly["Srbd_v2"].apply(lambda x: "Pass" if (x >= combinedmedians) else "Fail"))
 
         #check list of fails
