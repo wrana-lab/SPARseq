@@ -36,13 +36,17 @@ Resource folder structure
 		-Clinical_V2_sparseq_pipeline_V1.3.2.sh
 
 Explanation of files:
+
 codon_aa_table.csv contains nucleotide to amino acid conversion info.
+
 Clinical_V2_sparseq_pipeline_V1.3.2.sh is the wrapper script that is run to launch the rest of the analysis.
+
 Clinical_V2_sparseq_analysis_V1.3.2.py is the analysis script that is run after bowtie and htseq calls to generate output files.
 
 
 Initial one-time step:
 Build bowtie index from within the bowtie_index folder with
+
 bowtie-build clinical_V2_sparsq_V1p2_amplicons.fa clinical_V2_sparsq_V1p2_amplicons
 
 Instructions for one run:
