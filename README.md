@@ -1,5 +1,5 @@
 # SPARseq
-This is the code for the Wrana Lab's SPARseq analysis pipeline. Originally designed and written by Seda Barutcu [https://github.com/seda-barutcu/MultiplexedPCR-DeepSequence-Analysis], upgraded and streamlined by Kathleen-Rose Zakoor, and maintained and updated by Lauren Caldwell. 
+This is the code for the Wrana Lab's SPARseq analysis pipeline (V0). Originally designed and written by Seda Barutcu [https://github.com/seda-barutcu/MultiplexedPCR-DeepSequence-Analysis], upgraded and streamlined by Kathleen-Rose Zakoor, and maintained and updated by Lauren Caldwell. 
 
 Requirements:
 
