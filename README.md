@@ -1,5 +1,5 @@
 # SPARseq
-This is the code for the Wrana Lab's SPARseq analysis pipeline. Originally designed and written by Seda Barutcu for the first SPAR-seq paper [https://www.nature.com/articles/s41467-021-21653-y, https://github.com/seda-barutcu/MultiplexedPCR-DeepSequence-Analysis], the workflow has been upgraded and streamlined by Kathleen-Rose Zakoor, and maintained and updated by Lauren Caldwell and Andreea Obersterescu. 
+This is the code for the Wrana Lab's SPARseq analysis pipeline (V2). Originally designed and written by Seda Barutcu for the first SPAR-seq paper [https://www.nature.com/articles/s41467-021-21653-y, https://github.com/seda-barutcu/MultiplexedPCR-DeepSequence-Analysis], the workflow has been upgraded and streamlined by Kathleen-Rose Zakoor, and maintained and updated by Lauren Caldwell and Andreea Obersterescu. 
 
 Dependencies
 1. Bowtie 0.12.7 (http://bowtie-bio.sourceforge.net/index.shtml)
