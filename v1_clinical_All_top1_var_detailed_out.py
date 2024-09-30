@@ -30,7 +30,7 @@ for RdRP_nt in RdRP :
     it=it+1
 RdRP_aa_dic = dict()
 pos=0
-aa_num=575
+aa_num=684 #adjusted from 575 to 684 to match ref
 for RdRP_aa in RdRP :
     if pos+3<len(RdRP):
         codon = RdRP[pos:(pos+3)]
@@ -140,8 +140,8 @@ with open('SE_fastq_files.txt') as f:
                 for nt in seq :
                     if nt_num<15587 and RdRP_nt_dic[nt_num]!= nt :
                         fileout_RdRP.write(filename_l[1] + "," + filename_l[4] +","+ str(rdrp_c_) + "," + str(val) + "," + RdRP_nt_dic[nt_num]+str(nt_num)+nt+",")
-                        var_aa_num = 575+int((nt_num-15490)/3)
-                        var_aa_start = ((var_aa_num-575)*3)
+                        var_aa_num = 684+int((nt_num-15490)/3) #adjust 575 to 684 to match ref
+                        var_aa_start = ((var_aa_num-684)*3)
                         var_aa_end = var_aa_start+3
                         ncodon = seq[var_aa_start:var_aa_end]
                         if "N" not in ncodon:fileout_RdRP.write(RdRP_aa_dic[var_aa_num]+str(var_aa_num)+aa_dic[ncodon]+",")
