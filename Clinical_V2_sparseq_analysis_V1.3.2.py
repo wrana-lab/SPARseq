@@ -299,7 +299,7 @@ def main():
                 RdRP_nt_dic = {}
                 RdRP_aa_dic = {}
                 RdRP_nt_dic = build_ntdict(RdRP_amp, RdRP_nt_dic, 15490, 0)
-                RdRP_aa_dic = build_aadict(aa_dic, RdRP_aa_dic, RdRP_amp, 0, 575)
+                RdRP_aa_dic = build_aadict(aa_dic, RdRP_aa_dic, RdRP_amp, 0, 684) #adjusted from 575 to 684 to match ref
 
                 Srbd_v2_nt_dic = {}
                 Srbd_v2_aa_dic = {}
@@ -343,8 +343,8 @@ def main():
                                 RdRP_Var_file.write(sampleID + "," + well +","+ str(rdrp_c_) + "," + str(val) + "," + RdRP_nt_dic[nt_num]+str(nt_num)+nt+",")
                                 ws_data = [sampleID, well, str(rdrp_c_),str(val) , RdRP_nt_dic[nt_num]+str(nt_num)+nt]
 
-                                var_aa_num = 575+int((nt_num-15490)/3)
-                                var_aa_start = ((var_aa_num-575)*3)
+                                var_aa_num = 684+int((nt_num-15490)/3) #adjusted from 575 to 684 to match ref
+                                var_aa_start = ((var_aa_num-684)*3)
                                 var_aa_end = var_aa_start+3
                                 ncodon = seq[var_aa_start:var_aa_end]
 
